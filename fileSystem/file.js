@@ -1,4 +1,7 @@
 import fs from "node:fs"
+import os from "node:os"
+
+console.log(os.cpus().length)
 
 //synchronus call 
 // fs.writeFileSync("test.txt", "testing nodejs");
@@ -10,13 +13,13 @@ import fs from "node:fs"
 // })
 
 //read file synchronus
-const result = fs.readFileSync("./contact.txt", "utf-8");
-console.log(result);
+// const result = fs.readFileSync("./contact.txt", "utf-8");
+// console.log(result);
 
-//does not return any value, it will return undefined
-fs.readFile("./contact.txt", "utf-8", (err, data)=>{
-    if(err){
-        console.log(err); 
-    }
-    console.log(data);
-})
+// //does not return any value, it will return undefined
+// fs.readFile("./contact.txt", "utf-8", (err, data)=>{
+//     if(err){
+//         console.log(err); 
+//     }
+//     console.log(data);
+// })
