@@ -32,3 +32,12 @@
 1784315589016 / New Request received
 1784315593357 /search?search_query=javascript+tutorial New Request received
 1784315609626 /search?search_query=javascript+tutorial New Request received
+1784315851738 /.well-known/appspecific/com.chrome.devtools.json New Request received
+1784315858766 /search?search_query=javascript+tutorial New Request received
+1784315858961 /.well-known/appspecific/com.chrome.devtools.json New Request received
+1784320856685 /search?search_query=javascript+tutorial GET New Request received
+1784320867129 /signup GET New Request received
+1784321148505 /signup GET New Request received
+1784321165313 /users?userid=1 GET New Request received
+1784321229899 /users?userid=1 GET New Request received
+1784321230682 /users?userid=1 GET New Request received
