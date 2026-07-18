@@ -3,23 +3,38 @@ import users from "./MOCK_DATA.json" with { type: "json" };
 import fs from "fs";
 
 const app = express();
-app.use(express.json());
 const PORT = 8000;
 
 //for browser based data
 app.get("/users", (req, res) => {
-  const html = `
+    const html = `
     <ul>
     ${users.map((u) => `<li>${u.first_name}, ${u.email}</li>`).join("")}
     </ul>`;
   res.send(html);
 });
 
-//Routes-REST API Points
-app.get("/api/users", (req, res) => {
-  res.json(users);
-});
+app.use((req,res,next)=>{
+    console.log("Middleware 1");
+    fs.appendFile("log.txt", `\n${Date.now()}, ${req.method}, ${req.path}`,(err,data)=>{
+        next();
+    })
+    //return res.json({msg:"Middleware 1"})//ths will stop the request and response cycle and will not go to next middleware or route handler
+    
+})
 
+// app.use((req,res,next)=>{
+    //     console.log("Middleware 2");
+    //     next();
+    
+    // })
+    
+    //Routes-REST API Points
+    app.get("/api/users", (req, res) => {
+        res.json(users);
+    });
+    
+    app.use(express.urlencoded({extended: false}));
 //ALL ROUTES WITH SAME ENDPOINT BUT DIFFERENT METHODS
 app
   .route("/api/users/:id")
@@ -71,7 +86,7 @@ app
     });
   });
 
-app.use(express.urlencoded({ extended: false })); //midleware to parse form data
+
 app.post("/api/users", (req, res) => {
   //TODO: Create user
   const body = req.body;

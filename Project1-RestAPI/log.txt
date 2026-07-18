@@ -1,0 +1,8 @@
+1784405922553, GET, /api/users
+1784405941198, GET, /api/users
+1784405975282, GET, /api/users
+1784406046785, GET, /api/users
+1784406112533, PATCH, /api/users/1
+1784406222445, PATCH, /api/users/1
+1784406351822, PATCH, /api/users/1
+1784406362550, GET, /api/users
