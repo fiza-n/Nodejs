@@ -1,0 +1,16 @@
+RestAPI - supports JSON format
+
+if no /api then html document will return
+if /api the json format will return
+
+GET /users - list all users (json)
+
+GET /api/users/1 - get user with id 1
+GET /api/users/2 - get user with id 2
+/api/users/:id - dynamic parameters
+
+POST /api/users - create user
+
+PATCH /api/users/1 - edit user with id 1
+
+DELETE /api/users/1 - delete user with id 1
