@@ -1,9 +1,40 @@
 import express from "express";
 import users from "./MOCK_DATA.json" with { type: "json" };
 import fs from "fs";
+import mongoose from "mongoose"
 
 const app = express();
 const PORT = 8000;
+
+//Schema
+const userSchema = mongoose.Schema({
+  first_name:{
+    type: String,
+    required: true
+  },
+  last_name:{
+    type: String,
+  },
+  email:{
+    type: String,
+    required: true,
+    unique: true
+  },
+  job_title:{
+    type:String,
+    required: true
+  }
+})
+//Model
+const User = mongoose.model("user", userSchema)
+//connect to mongodb
+
+mongoose.connect("mongodb://127.0.0.1:27017/userdb").then(()=>{
+  console.log("Connected to MongoDB")
+  
+}).catch((err)=>{
+  console.log("Error connecting to MongoDB", err)
+})
 
 //for browser based data
 app.get("/users", (req, res) => {
@@ -31,7 +62,7 @@ app.use((req,res,next)=>{
     
     //Routes-REST API Points
     app.get("/api/users", (req, res) => {
-      console.log(req.headers)
+      console.log(req.headers);
       res.setHeader("X-myname", "fiza noor");//custom headers
       //its a good practice to always add X infront of custom headers
         res.json(users);
@@ -44,6 +75,9 @@ app
   .get((req, res) => {
     const id = req.params.id;
     const user = users.find((u) => u.id === parseInt(id));
+    if(!user) return res.status(404).json({
+      message: "User not found"
+    })
     return res.json(user);
   })
   .patch((req, res) => {
@@ -93,12 +127,18 @@ app
 app.post("/api/users", (req, res) => {
   //TODO: Create user
   const body = req.body;
+  // if(!body || req.email === undefined || req.email === null || req.email === ""){
+  //   return res.status(400).json({
+  //     status:"Incomplete Data",
+  //     message:"Email is required"
+  //   })
+  // }
   console.log(body);
 
   users.push({ ...body, id: users.length + 1 });
   fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) => {
     if (!err)
-      return res.json({
+      return res.status(201).json({
         status: "success",
         message: "User created successfully",
       });
