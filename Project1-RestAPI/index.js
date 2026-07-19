@@ -31,6 +31,9 @@ app.use((req,res,next)=>{
     
     //Routes-REST API Points
     app.get("/api/users", (req, res) => {
+      console.log(req.headers)
+      res.setHeader("X-myname", "fiza noor");//custom headers
+      //its a good practice to always add X infront of custom headers
         res.json(users);
     });
     
