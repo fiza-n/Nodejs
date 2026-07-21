@@ -20,3 +20,5 @@
 1784455130679, POST, /api/users
 1784455232447, POST, /api/userss
 1784455354188, GET, /api/users/2000
+1784549467783, POST, /api/users
+1784549524301, POST, /api/users
