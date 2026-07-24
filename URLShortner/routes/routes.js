@@ -7,4 +7,5 @@ router.delete("/:id", handleDeleteUrlByID)
 router.get("/:shortId", handleVisitedHistoryOnUrls)
 router.get("/analytics/:shortId", handleGetAnalytics)
 
+
 export default router;

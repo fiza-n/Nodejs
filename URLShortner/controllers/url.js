@@ -1,3 +1,4 @@
+import shortid from "shortid"
 import URL from "../models/url.js"
 
 
@@ -9,18 +10,17 @@ async function handleGenerateNewUrls(req,res){
             message:"url is required"
         })
     }
-   
+   const id = shortid.generate()
     await URL.create({
-       
+        shortId: id,
         redirectUrl: body.url,
         visitHistory: []
 
     })
 
-    return res.status(201).json({
-       status:"success",
-       message: "Short Url created"
-    })
+ return res.render("home", {
+    id: id
+ })
 
 }
 async function handleDeleteUrlByID(req,res) {
@@ -41,7 +41,7 @@ async function handleVisitedHistoryOnUrls(req,res){
             }
         }
     })
-     res.redirect(entry.redirectUrl)
+    // res.redirect(entry.redirectUrl)
 }
 
 async function handleGetAnalytics(req,res){
