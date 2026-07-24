@@ -9,4 +9,8 @@ staticRoute.get("/", async (req,res)=>{
         urls: allUrls
     })
 })
+
+staticRoute.get("/signup",(req,res)=>{
+    return res.render("signup")
+})
 export default staticRoute;
