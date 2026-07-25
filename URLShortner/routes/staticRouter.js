@@ -4,7 +4,8 @@ import URL from "../models/url.js";
 const staticRoute = express.Router();
 
 staticRoute.get("/", async (req,res)=>{
-    if(!req.user) return res.render("/login")
+    if(!req.user) return res.render("login")
+   
     const allUrls = await URL.find({createdBy: req.user._id})
     return res.render("home", {
         urls: allUrls
