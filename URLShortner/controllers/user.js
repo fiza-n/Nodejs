@@ -22,10 +22,22 @@ async function handleUserLogin(req, res) {
    const user =  await User.findOne({
         email, password
     })
-    console.log(user)
+    // console.log("Entered password:", `"${password}"`);
+   
+//     console.log(user)
+//     console.log(req.body)
+//     console.log(req.body.email);
+//  console.log(req.body.password);
+    // if(!user){
+    //     return res.render("login", {
+    //         error:"Invalid username or password"
+    //     })
+    // }
+
     if(!user){
-        return res.render("login", {
-            error:"Invalid username or password"
+        return res.json({
+            status:"error",
+            message:"invalid"
         })
     }
     // const sessionId = uuidv4()
@@ -33,11 +45,12 @@ async function handleUserLogin(req, res) {
     // res.cookie("uid", sessionId)
 
    
-   const token =  setUser( user)
-    res.cookie("uid", token)
-
+   const token =  setUser(user)
+    //res.cookie("uid", token)
+    // console.log(token)
+    res.json({token})
     
-    return res.redirect("/")
+   // return res.redirect("/")
 }
 
 

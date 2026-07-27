@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-const secret = "fiza123$$"
+const secret = "noor123$$"
 //const sessionIdToUserMAP = new Map()
 
 function setUser(user){
@@ -8,16 +8,14 @@ function setUser(user){
      const payload = {
         ...user
     }
-    return jwt.sign(payload, secret, 
-        {
-            expiresIn: "1h"
-        }
-    )
+    console.log(secret);
+    return jwt.sign(payload, secret)
 }
 
 function getUser(token){
    // return sessionIdToUserMAP.get(id)
    if(!token) return null;
+   console.log(secret);
    return jwt.verify(token,secret)
 }
 

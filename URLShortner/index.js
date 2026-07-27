@@ -19,7 +19,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-app.use(express.json())
 app.use(express.urlencoded({extended: false}))//middleware to support form data
 app.use(cookieParser())
 app.set("view engine", "ejs");
@@ -28,6 +27,7 @@ app.set("views", path.join(__dirname, "views"));
 //routes
 
 app.use("/url",restrictToLoggedInUserOnly, urlRoute)
+app.use(express.json())
 app.use("/user", userRoute )
 app.use("/",checkAuth, staticRoute)
 app.listen(PORT, ()=>{
