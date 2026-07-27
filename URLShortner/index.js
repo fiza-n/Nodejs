@@ -7,7 +7,7 @@ import userRoute from "./routes/user.js"
 import URL from "./models/url.js"
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser"
-import {restrictToLoggedInUserOnly, checkAuth} from "./middlewares/auth.js"
+import { checkForAuthentication, restrictTo} from "./middlewares/auth.js"
 
 const app = express();
 const PORT = 8000
@@ -23,13 +23,16 @@ app.use(express.urlencoded({extended: false}))//middleware to support form data
 app.use(cookieParser())
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
+app.use(checkForAuthentication)
 //routes
+app.use("/url",restrictTo(["NORMAL", "ADMIN"] ), urlRoute)
+app.use("/", staticRoute)
 
-app.use("/url",restrictToLoggedInUserOnly, urlRoute)
+//app.use("/url",restrictToLoggedInUserOnly, urlRoute)
+//app.use("/",checkAuth, staticRoute)
 app.use(express.json())
 app.use("/user", userRoute )
-app.use("/",checkAuth, staticRoute)
+
 app.listen(PORT, ()=>{
     console.log(`Server has started on port ${PORT}`);
 })

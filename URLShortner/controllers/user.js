@@ -34,23 +34,23 @@ async function handleUserLogin(req, res) {
     //     })
     // }
 
-    if(!user){
-        return res.json({
-            status:"error",
-            message:"invalid"
-        })
-    }
+    // if(!user){
+    //     return res.json({
+    //         status:"error",
+    //         message:"invalid"
+    //     })
+    // }
     // const sessionId = uuidv4()
     // setUser(sessionId, user)
     // res.cookie("uid", sessionId)
 
    
    const token =  setUser(user)
-    //res.cookie("uid", token)
+    res.cookie("token", token)
     // console.log(token)
-    res.json({token})
+    // res.json({token})
     
-   // return res.redirect("/")
+   return res.redirect("/")
 }
 
 
