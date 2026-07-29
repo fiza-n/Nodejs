@@ -19,9 +19,12 @@ async function handleGenerateNewUrls(req,res){
 
     })
 
- return res.render("home", {
-    id: id
- })
+//  return res.render("home", {
+//     id: id
+//  })
+return res.json({
+     shortId: id,
+})
 
 }
 async function handleDeleteUrlByID(req,res) {

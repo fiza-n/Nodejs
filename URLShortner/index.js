@@ -24,13 +24,14 @@ app.use(cookieParser())
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(checkForAuthentication)
+app.use(express.json())
 //routes
-app.use("/url",restrictTo(["NORMAL", "ADMIN"] ), urlRoute)
+// app.use("/url",restrictTo(["NORMAL", "ADMIN"] ), urlRoute)
+app.use("/url",urlRoute)
 app.use("/", staticRoute)
 
 //app.use("/url",restrictToLoggedInUserOnly, urlRoute)
 //app.use("/",checkAuth, staticRoute)
-app.use(express.json())
 app.use("/user", userRoute )
 
 app.listen(PORT, ()=>{
