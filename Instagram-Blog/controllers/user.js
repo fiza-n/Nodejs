@@ -1,5 +1,6 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
+import { createTokenForUser } from "../services/auth.js";
 
 async function hashPassword(password) {
   const saltRounds = 10;
@@ -14,8 +15,7 @@ async function handleUserSignup(req, res) {
 
     const existingUser = await User.findOne({ email });
 
-    if (existingUser)
-      return res.redirect("/signup")
+    if (existingUser) return res.redirect("/user/signup");
 
     const user = await User.create({
       fullname,
@@ -23,28 +23,44 @@ async function handleUserSignup(req, res) {
       password: await hashPassword(password),
     });
 
-    return res.redirect("/")
+    return res.redirect("/");
   } catch (error) {
-    console.log(error)
-   
+    console.log(error);
   }
 }
 
-async function handleUserSignin(req,res) {
-    const {email, password} = req.body
-   const user = await User.findOne({ email });
+async function handleUserSignin(req, res) {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
 
-   if(!user) return res.redirect("/login")
+    if (!user) {
+      return res.status(401).render("signin", {
+        error: "Incorrect email or password",
+      });
+    }
 
-    const result = await bcrypt.compare(password, user.password )
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
-if (!result) {
-    throw new Error("User not found")
-} 
-return res.redirect("/")
+    if (!isPasswordValid) {
+      return res.status(401).render("signin", {
+        error: "Incorrect email or password",
+      });
+    }
+
+    const token = createTokenForUser(user);
+    res.cookie("token", token);
+    return res.redirect("/");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).render("signin", {
+      error: "Incorrect email or password",
+    });
+  }
 }
 
-export{
-    handleUserSignup,
-    handleUserSignin
+async function handleUserSignout(req,res){
+    return res.clearCookie("token").redirect("/")
 }
+
+export { handleUserSignup, handleUserSignin ,handleUserSignout};
