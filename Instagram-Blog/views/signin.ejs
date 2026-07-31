@@ -10,6 +10,9 @@
   <body>
     <div class="container">
         <h1>SignIn</h1>
+      <% if (typeof error !== "undefined" && error) { %>
+        <div class="alert alert-danger" role="alert"><%= error %></div>
+      <% } %>
       <form action="/user/signin" method="post">
         
         <div class="mb-3">

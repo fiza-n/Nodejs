@@ -1,16 +1,6 @@
-import express from "express"
-import { upload } from "../middlewares/mutler.js"
 import Blog from "../models/blog.js"
 
-const route = express.Router()
-
-route.get("/add-new", (req, res) => {
-    res.render("addBlog", {
-        user: req.user
-    })
-})
-
-route.post("/",async (req, res) =>{
+async function handleBlogCreation(req, res) {
     try {
         console.log("Body:", req.body);
         console.log("File:", req.file);
@@ -36,6 +26,8 @@ route.post("/",async (req, res) =>{
         console.error("Blog create error:", error);
         return res.status(500).send(error.message);
     }
-});
+}
 
-export default route
+export {
+    handleBlogCreation
+}
