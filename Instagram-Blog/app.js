@@ -1,4 +1,4 @@
-
+import 'dotenv/config'
 import express from "express"
 import path from "path"
 import userRoute from "./routes/user.js"
@@ -26,7 +26,7 @@ app.use(express.static(path.resolve("./public")))
 
 
 app.get("/", async (req,res)=>{
-  const allBlogs = await Blog.find({}).populate("createdBy", "fullname profileImageUrl")
+  const allBlogs = await Blog.find({})
     res.render("home", {
         user: req.user,
         blogs: allBlogs
@@ -37,4 +37,4 @@ app.use("/blog",blogRoute)
 
 app.listen(PORT, ()=>{
     console.log(`Server has started on Port ${PORT}`)
-})import 'dotenv/config'
+})
