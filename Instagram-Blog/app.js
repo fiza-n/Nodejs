@@ -1,4 +1,4 @@
-import 'dotenv/config'
+
 import express from "express"
 import path from "path"
 import userRoute from "./routes/user.js"
@@ -37,4 +37,4 @@ app.use("/blog",blogRoute)
 
 app.listen(PORT, ()=>{
     console.log(`Server has started on Port ${PORT}`)
-})
+})import 'dotenv/config'
