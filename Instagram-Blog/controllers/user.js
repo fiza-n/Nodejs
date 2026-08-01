@@ -35,8 +35,8 @@ async function handleUserSignin(req, res) {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(401).render("signin", {
-        error: "Incorrect email or password",
+      return res.status(401).render("signup", {
+        error: "User not found with the provided email",
       });
     }
 

@@ -1,5 +1,6 @@
+import 'dotenv/config'
 import jwt from "jsonwebtoken"
-const secret = "spiderman123"
+
 
 function createTokenForUser(user){
     const payload = {
@@ -9,7 +10,7 @@ function createTokenForUser(user){
         profileImage : user.profileImageUrl,
 
     }
-    const token = jwt.sign(payload, secret, {
+    const token = jwt.sign(payload, process.env.SECRET, {
         expiresIn: "30d"
     })
     return token
@@ -17,7 +18,7 @@ function createTokenForUser(user){
 }
 
 function validateToken(token){
-    return jwt.verify(token, secret)
+    return jwt.verify(token, process.env.SECRET)
 }
 
 export{

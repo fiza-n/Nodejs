@@ -1,6 +1,7 @@
 import express from "express"
 import { upload } from "../middlewares/mutler.js"
 import Blog from "../models/blog.js"
+import { handleBlogCreation ,handleGetBlogById, handleBlogComments} from "../controllers/blog.js"
 
 const route = express.Router()
 
@@ -10,32 +11,10 @@ route.get("/add-new", (req, res) => {
     })
 })
 
-route.post("/",async (req, res) =>{
-    try {
-        console.log("Body:", req.body);
-        console.log("File:", req.file);
-        console.log("User:", req.user);
+route.post("/comment/:blogId", handleBlogComments)
 
-        const { title, description } = req.body;
+route.post("/",upload.single("coverImageUrl"),handleBlogCreation) 
 
-        const coverImageUrl = req.file
-            ? `/uploads/${req.file.filename}`
-            : "";
-
-        const blog = await Blog.create({
-            title,
-            description,
-            // coverImageUrl,
-            // createdBy: req.user?._id,
-        });
-
-        console.log("Saved Blog:", blog);
-
-        return res.redirect(`/blog/${blog._id}`);
-    } catch (error) {
-        console.error("Blog create error:", error);
-        return res.status(500).send(error.message);
-    }
-});
+route.get("/:id", handleGetBlogById)
 
 export default route
