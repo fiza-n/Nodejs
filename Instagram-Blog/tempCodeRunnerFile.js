@@ -5,35 +5,36 @@ import DBConnect from "./connection.js"
 import { checkForAuthentication } from "./middlewares/auth.js"
 import cookieParser from "cookie-parser"
 import blogRoute from "./routes/blog.js"
-import Blog from "./models/blog.js"
-
-
 
 const app = express()
-const PORT = 8000;
+const PORT = 8000
 
 app.set("view engine", "ejs")
 app.set("views", path.resolve("./views"))
-
-DBConnect("mongodb://127.0.0.1:27017/blogdb")
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser())
 app.use(checkForAuthentication)
-app.use(express.static(path.resolve("./public")))
 
-
-app.get("/", async (req,res)=>{
-  const allBlogs = await Blog.find({})
+app.get("/", (req, res) => {
     res.render("home", {
-        user: req.user,
-        blogs: allBlogs
+        user: req.user
     })
 })
-app.use("/user",userRoute)
-app.use("/blog",blogRoute)
+app.use("/user", userRoute)
+app.use("/blog", blogRoute)
 
-app.listen(PORT, ()=>{
-    console.log(`Server has started on Port ${PORT}`)
-})
+async function startServer() {
+    try {
+        await DBConnect("mongodb://localhost:27017/blogdb")
+        app.listen(PORT, () => {
+            console.log(`Server has started on Port ${PORT}`)
+        })
+    } catch (error) {
+        console.error("Failed to start server:", error)
+        process.exit(1)
+    }
+}
+
+startServer()

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head') %>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            <%= blogs?.title || 'Blog Details' %>
+        </title>
+</head>
+
+<body class="bg-light">
+    <%- include('./partials/nav') %>
+
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="card shadow-sm border-0 overflow-hidden">
+                        <% if (blogs?.coverImageUrl) { %>
+                            <img src="<%= blogs.coverImageUrl %>" class="card-img-top" alt="<%= blogs.title %>"
+                                style="height: 420px; object-fit: cover;">
+                            <% } else { %>
+                                <div class="bg-dark text-white d-flex align-items-center justify-content-center"
+                                    style="height: 260px;">
+                                    <h3 class="mb-0">No Cover Image</h3>
+                                </div>
+                                <% } %>
+
+                                    <div class="card-body p-4 p-md-5">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <span class="badge bg-dark px-3 py-2">Blog Post</span>
+                                            <small class="text-muted">Published recently</small>
+                                        </div>
+
+                                        <h1 class="display-6 fw-bold mb-3">
+                                            <%= blogs?.title %>
+                                        </h1>
+                                        <pre class="lead text-muted mb-4"><%= blogs?.description %></pre
+
+              <hr>
+
+              <div class="d-flex align-items-center gap-3 mt-4">
+                <div class="profile-avatar d-flex align-items-center justify-content-center overflow-hidden rounded-circle border border-2 border-dark shadow-sm" style="width: 56px; height: 56px; background-color: #f1f1f1;">
+                  <%
+                    const profileImage = blogs?.createdBy?.profileImageUrl && blogs.createdBy.profileImageUrl !== './images/userIcon' && blogs.createdBy.profileImageUrl !== './Images/userIcon.jpg'
+                      ? blogs.createdBy.profileImageUrl
+                      : '/Images/userIcon.jpg';
+                  %>
+                  <img src="<%= profileImage %>" alt="Profile" class="w-100 h-100" style="object-fit: cover;">
+                </div>
+                <div>
+                  <h6 class="mb-0">Author</h6>
+                  <p class="text-muted mb-0"><%= blogs?.createdBy?.fullname || 'Guest Blogger' %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card shadow-sm border-0 mt-4">
+            <div class="card-body p-4">
+                
+                <% if (locals.user) { %>
+                    <h4 class="fw-bold mb-3">Comments (<%= comments.length %>)</h4>
+                <form action="/blog/comment/<%= blogs._id %>" method="POST" class="mb-4">
+                  <div class="mb-3">
+                    <label class="form-label">Your Comment</label>
+                    <textarea class="form-control" name="comment" rows="4" placeholder="Write something nice..."></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-dark">Post Comment</button>
+                </form>
+                 <div>
+                
+                       <% comments.forEach(comment => { %>
+                       <div class="d-flex align-items-start gap-3 mb-3">
+                         <div class="profile-avatar d-flex align-items-center justify-content-center overflow-hidden rounded-circle border border-2 border-dark shadow-sm" style="width: 56px; height: 56px; background-color: #f1f1f1;">
+                  <%
+                    const profileImage = comments?.createdBy?.profileImageUrl
+                      ? comments.createdBy.profileImageUrl
+                      : '/Images/userIcon.jpg';
+                  %>
+                  <img src="<%= profileImage %>" alt="Profile" class="w-100 h-100" style="object-fit: cover;">
+                </div>
+                <div class="mb-3">
+                    <strong><%= comment.createdBy.fullname || 'Anonymous' %></strong>
+                    <p class="mb-0"><%= comment.comment %></p>
+                </div>
+                       </div>
+                    <% }) %>
+                 </div>
+             
+              <% } else { %>
+               <div>
+                <h4 class="fw-bold mb-3">Comments (<%= comments.length %>)</h4>
+                <p class="text-muted">Please <a href="/user/signin">Signin</a> to post a comment.</p>
+                       <% comments.forEach(comment => { %>
+                       <div class="d-flex align-items-start gap-3 mb-3">
+                         <div class="profile-avatar d-flex align-items-center justify-content-center overflow-hidden rounded-circle border border-2 border-dark shadow-sm" style="width: 56px; height: 56px; background-color: #f1f1f1;">
+                  <%
+                    const profileImage = comments?.createdBy?.profileImageUrl
+                      ? comments.createdBy.profileImageUrl
+                      : '/Images/userIcon.jpg';
+                  %>
+                  <img src="<%= profileImage %>" alt="Profile" class="w-100 h-100" style="object-fit: cover;">
+                </div>
+                <div class="mb-3">
+                    <strong><%= comment.createdBy.fullname || 'Anonymous' %></strong>
+                    <p class="mb-0"><%= comment.comment %></p>
+                </div>
+                       </div>
+                    <% }) %>
+                 </div>
+                 <% } %>
+              
+                 
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('./partials/script') %>
+  </body>
+</html>

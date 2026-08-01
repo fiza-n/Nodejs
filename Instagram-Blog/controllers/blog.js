@@ -1,11 +1,9 @@
 import Blog from "../models/blog.js"
+import Comment from "../models/comment.js"
 
 async function handleBlogCreation(req, res) {
     try {
-        console.log("Body:", req.body);
-        console.log("File:", req.file);
-        console.log("User:", req.user);
-
+      
         const { title, description } = req.body;
 
         const coverImageUrl = req.file
@@ -15,11 +13,10 @@ async function handleBlogCreation(req, res) {
         const blog = await Blog.create({
             title,
             description,
-            // coverImageUrl,
-            // createdBy: req.user?._id,
+            coverImageUrl,
+            createdBy: req.user?._id,
         });
 
-        console.log("Saved Blog:", blog);
 
         return res.redirect(`/blog/${blog._id}`);
     } catch (error) {
@@ -28,6 +25,29 @@ async function handleBlogCreation(req, res) {
     }
 }
 
+async function handleGetBlogById(req,res){
+   const blogs =  await Blog.findById(req.params.id).populate("createdBy", "fullname profileImageUrl")
+    const comments = await Comment.find({ blogId: req.params.id }).populate("createdBy", "fullname profileImageUrl")
+   
+  return res.render("blogDetails", {
+    user: req.user,
+    blogs,
+    comments
+  })
+}
+
+async function handleBlogComments(req,res){
+ await Comment.create({
+        comment: req.body.comment,
+        blogId: req.params.blogId,
+        createdBy: req.user?._id
+    })
+
+    return res.redirect(`/blog/${req.params.blogId}`)
+}
+
 export {
-    handleBlogCreation
+    handleBlogCreation,
+    handleGetBlogById,
+    handleBlogComments
 }

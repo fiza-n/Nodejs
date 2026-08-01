@@ -12,10 +12,10 @@ const blogSchema = new mongoose.Schema({
     coverImageUrl: {
         type: String
     },
-    // createdBy: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "user"
-    // }
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user"
+    }
 }, { timestamps: true });
 
 const Blog = model("blog", blogSchema);
