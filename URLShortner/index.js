@@ -8,9 +8,19 @@ import URL from "./models/url.js"
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser"
 import { checkForAuthentication, restrictTo} from "./middlewares/auth.js"
+import {createClient} from "redis"
+import "dotenv/config.js"
 
 const app = express();
 const PORT = 8000
+
+const redis = createClient({
+  url:process.env.REDIS_URL
+});
+redis.on("error", (err) => console.log("Redis Client Error", err));
+
+await redis.connect();
+console.log("Redis connected successfully")
 
 
  DBConnect("mongodb://127.0.0.1:27017/urldb")
@@ -37,4 +47,5 @@ app.use("/user", userRoute )
 app.listen(PORT, ()=>{
     console.log(`Server has started on port ${PORT}`);
 })
+export default redis
 
