@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-const secret = ""
+const secret = "spiderman123"
 //const sessionIdToUserMAP = new Map()
 
 function setUser(user){
